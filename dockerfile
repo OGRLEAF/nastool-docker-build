@@ -26,6 +26,9 @@ RUN apk add nginx envsubst
 RUN npm install -g pm2 
 # \ --registry=https://registry.npmmirror.com
 
+# RUN chown root:root /nastool-lite -Rf
+RUN chmod 770 /nastool-lite -Rf
+
 WORKDIR /nastool-lite/web
 RUN npm install 
 # --registry=https://registry.npmmirror.com
@@ -50,8 +53,6 @@ COPY ./pm2_config.js ./ecosystem.config.js
 
 COPY nginx.conf.template /etc/nginx/
 
-RUN chown root:root /nastool-lite -Rf
-RUN chmod 770 /nastool-lite -Rf
 
 ENV NGINX_PORT=3000
 ENV PUID=0
