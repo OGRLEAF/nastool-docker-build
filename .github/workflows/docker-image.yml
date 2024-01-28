@@ -13,7 +13,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-        run: | 
+      - run: | 
           eval `ssh-agent -s`
           ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
       -
