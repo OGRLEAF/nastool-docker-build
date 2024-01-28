@@ -18,4 +18,4 @@ jobs:
       run: | 
         eval `ssh-agent -s`
         ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
-        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        docker build . --file Dockerfile --tag my-image-name:$(date +%s)  --ssh default
