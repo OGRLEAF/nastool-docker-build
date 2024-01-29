@@ -57,5 +57,6 @@ COPY nginx.conf.template /etc/nginx/
 ENV NGINX_PORT=3000
 ENV PUID=0
 ENV GUID=0
+ENV NASTOOL_CONFIG=/config/config.yaml
 
 ENTRYPOINT ["bash", "entrypoint.sh" ]
