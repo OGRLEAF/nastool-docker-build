@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:labs
-FROM alpine:latest
+FROM python:3.11-alpine
 
 ENV SSH_AGENT_UID=1000
 
@@ -17,7 +17,23 @@ RUN apk add --no-cache --virtual .build-deps \
         musl-dev \
         libxml2-dev \
         libxslt-dev 
-RUN apk add --no-cache $(echo $(cat /nastool-lite/server/package_list.txt))
+RUN apk add --no-cache  git \
+                        python3-dev \
+                        tzdata \
+                        zip \
+                        curl \
+                        bash \
+                        fuse3  \
+                        xvfb \
+                        inotify-tools \
+                        chromium-chromedriver  \
+                        s6-overlay \
+                        ffmpeg \
+                        redis \
+                        wget \
+                        shadow \
+                        sudo 
+
 RUN python -V
 
 RUN apk add nodejs npm
@@ -35,8 +51,8 @@ RUN npm install
 RUN npm run build
 
 WORKDIR /nastool-lite/server
-RUN python -m venv .venv
-ENV PATH="/nastool-lite/server/.venv/bin:$PATH"
+# RUN python -m venv .venv
+# ENV PATH="/nastool-lite/server/.venv/bin:$PATH"
 RUN pip install --upgrade pip setuptools wheel 
 # --index-url="https://mirrors.aliyun.com/pypi/simple/"
 RUN pip install cython 
