@@ -45,4 +45,4 @@ jobs:
           context: .
           push: true
           ssh: default
-          tags: leafleaf/nastool-lite:latest,leafleaf/nastool-lite:v20240131
+          tags: leafleaf/nastool-lite:latest,leafleaf/nastool-lite:build.20230131
