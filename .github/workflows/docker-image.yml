@@ -2,10 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    tags:
+      - build.**
 
 env:
   # Use the same ssh-agent socket value across all jobs
