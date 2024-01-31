@@ -2,8 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches:    
-      - main
+    tags:
+      - "**"
 env:
   # Use the same ssh-agent socket value across all jobs
   # Useful when a GH action is using SSH behind-the-scenes
