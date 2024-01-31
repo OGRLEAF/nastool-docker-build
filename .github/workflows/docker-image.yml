@@ -18,6 +18,15 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
 
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: leafleaf/nastool-lite
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{raw}}
       - 
         name: Setup SSH passphrase
         env:
@@ -45,4 +54,4 @@ jobs:
           context: .
           push: true
           ssh: default
-          tags: leafleaf/nastool-lite:latest,leafleaf/nastool-lite:build.20230131
+          tags: ${{ steps.meta.outputs.tags }}
