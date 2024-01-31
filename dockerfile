@@ -31,7 +31,7 @@ RUN apk add --no-cache  git \
                         redis \
                         wget \
                         shadow \
-                        sudo 
+                        sudo
 
 RUN python -V
 
@@ -68,7 +68,7 @@ COPY ./pm2_config.js ./ecosystem.config.js
 
 COPY nginx.conf.template /etc/nginx/
 
-
+RUN touch /.dockerenv
 ENV NGINX_PORT=3000
 ENV PUID=0
 ENV GUID=0
