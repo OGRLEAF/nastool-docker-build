@@ -10,6 +10,4 @@ addgroup app-user root
 
 nginx
 
-chmod 770 /root -Rf
-
 pm2-runtime ecosystem.config.js

@@ -47,4 +47,6 @@ jobs:
           context: .
           push: true
           ssh: default
-          tags: leafleaf/nastool-lite:latest
+          tags: |
+            - leafleaf/nastool-lite:latest
+            - leafleaf/nastool-lite:v20240131
