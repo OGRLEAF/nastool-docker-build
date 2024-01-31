@@ -8,6 +8,8 @@ usermod -o -u "$PUID" app-user
 
 addgroup app-user root
 
+echo "Start nginx..."
 nginx
 
+echo "Start pm2-runtime..."
 pm2-runtime ecosystem.config.js
