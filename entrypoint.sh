@@ -8,6 +8,9 @@ usermod -o -u "$PUID" app-user
 
 addgroup app-user root
 
+chown app-user:app-user -R /nastool-lite/server
+chown app-user:app-user -R $NATOOL_CONFIG_PATH
+
 echo "Start nginx..."
 nginx
 

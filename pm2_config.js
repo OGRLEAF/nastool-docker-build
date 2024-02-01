@@ -10,7 +10,12 @@ module.exports = {
             env_development: {
                 NODE_ENV: "development"
             }
-        }, {
+        }, 
+        {
+            name: "redis",
+            script: "redis-server",
+        }, 
+        {
             name: "nastool-lite-api",
             script: "sudo -u app-user -E python run.py",
             cwd: "/nastool-lite/server",
