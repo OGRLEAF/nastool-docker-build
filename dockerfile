@@ -59,7 +59,8 @@ RUN pip install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
 WORKDIR /nastool-lite/web-react
 RUN npm install ${NPM_MIRROR}
 RUN npm run build
-RUN cp .next/standalone /nastool-lite/web
+WORKDIR /nastool-lite/
+RUN cp /nastool-lite/web-react/.next/standalone /nastool-lite/web -R
 RUN rm /nastool-lite/web-react -R
 
 USER root
