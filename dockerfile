@@ -2,9 +2,9 @@
 FROM python:3.10-alpine
 
 ENV SSH_AGENT_UID=1000
-ENV NPM_MIRROR="--registry=https://registry.npmmirror.com"
-ENV PIP_MIRROR="--index-url=https://mirrors.aliyun.com/pypi/simple/"
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+# ENV NPM_MIRROR="--registry=https://registry.npmmirror.com"
+# ENV PIP_MIRROR="--index-url=https://mirrors.aliyun.com/pypi/simple/"
+# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
 RUN adduser --disabled-password --uid ${SSH_AGENT_UID} app-user
 RUN mkdir /nastool-lite
