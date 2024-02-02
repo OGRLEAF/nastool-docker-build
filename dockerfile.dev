@@ -11,7 +11,7 @@ RUN mkdir /nastool-lite
 RUN chown app-user:app-user /nastool-lite
 
 ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-leaf.git#dev_noauth  /nastool-lite/server
-ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web-react
+ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web
 
 
 RUN apk add --update --no-cache --virtual .build-deps \
@@ -31,7 +31,7 @@ RUN apk add --update --no-cache  git \
         inotify-tools \
         chromium-chromedriver  \
         s6-overlay \
-        ffmpeg-dev \
+        ffmpeg \
         redis \
         wget \
         shadow \
@@ -42,10 +42,14 @@ RUN python -V
 RUN apk add nodejs npm
 RUN apk add nginx envsubst
 
-RUN npm install -g pm2 sharp ${NPM_MIRROR}
+RUN npm install -g pm2 ${NPM_MIRROR}
 # RUN chown root:root /nastool-lite -Rf
 
 # USER app-user
+WORKDIR /nastool-lite/web
+RUN npm install ${NPM_MIRROR}
+RUN npm run build
+
 
 WORKDIR /nastool-lite
 RUN python -m venv python-venv
@@ -54,13 +58,6 @@ RUN pip install --upgrade pip setuptools wheel  ${PIP_MIRROR}
 RUN pip install cython  ${PIP_MIRROR}
 
 RUN pip install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
-
-
-WORKDIR /nastool-lite/web-react
-RUN npm install ${NPM_MIRROR}
-RUN npm run build
-RUN /.next/standalone /nastool-lite/web
-RUN rm /nastool-lite/web-react -R
 
 USER root
 EXPOSE 3000

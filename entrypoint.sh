@@ -8,6 +8,8 @@ usermod -o -u "$PUID" app-user
 
 addgroup app-user root
 
+cp $(which chromedriver) $WEBDRIVER
+chown app-user:app-user $WEBDRIVER
 chown app-user:app-user -R /nastool-lite/server
 chown app-user:app-user -R $NATOOL_CONFIG_PATH
 
