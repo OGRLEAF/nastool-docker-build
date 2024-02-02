@@ -59,7 +59,7 @@ RUN pip install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
 WORKDIR /nastool-lite/web-react
 RUN npm install ${NPM_MIRROR}
 RUN npm run build
-RUN /.next/standalone /nastool-lite/web
+RUN cp .next/standalone /nastool-lite/web
 RUN rm /nastool-lite/web-react -R
 
 USER root
@@ -78,5 +78,6 @@ ENV GUID=0
 ENV NATOOL_CONFIG_PATH=/config
 ENV NASTOOL_CONFIG=${NATOOL_CONFIG_PATH}/config.yaml
 
+ENV WEB_PORT=3002
 ENV WEBDRIVER=/nastool-lite/chromedriver
 ENTRYPOINT ["bash", "entrypoint.sh" ]

@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "nastool-lite-web",
-            script: "npm run start -- -p 3002",
+            script: "PORT=$WEB_PORT node .next/standalone/server.js",
             cwd: "/nastool-lite/web",
             env_production: {
                 NODE_ENV: "production"
