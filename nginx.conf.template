@@ -1,4 +1,4 @@
-user nginx;
+user www-data;
 worker_processes auto;
 worker_cpu_affinity auto;
 
@@ -34,12 +34,7 @@ http {
         #     try_files $uri $uri/ /index.html;
         # }
 
-        # location /assets {
-        #     # 静态资源
-        #     expires 7d;
-        #     add_header Cache-Control "public";
-        #     root /public;
-        # }
+
 
         location /imgx {
             # 站点图标缓存
@@ -78,7 +73,7 @@ http {
             proxy_read_timeout 3600s;
         }
 
-        location / {
+        location /api {
             # 后端API
             proxy_pass http://backend_api;
             rewrite ^.+mock-server/?(.*)$ /$1 break;
@@ -125,6 +120,13 @@ http {
             # 超时设置
             proxy_read_timeout 600s;
         }
+
+        location /ui/_next/static {
+             # 静态资源
+            expires 7d;
+            add_header Cache-Control "public";
+            alias /nastool-lite/web-static;
+       }
     }
 
     upstream backend_api {

@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "nastool-lite-web",
-            script: "PORT=$WEB_PORT node .next/standalone/server.js",
+            script: "HOSTNAME=127.0.0.1 PORT=$WEB_PORT node /nastool-lite/web/server.js",
             cwd: "/nastool-lite/web",
             env_production: {
                 NODE_ENV: "production"
@@ -17,7 +17,7 @@ module.exports = {
         }, 
         {
             name: "nastool-lite-api",
-            script: "sudo -u app-user -E python run.py",
+            script: "sudo -u app-user -E $PYTHON run.py",
             cwd: "/nastool-lite/server",
             env_production: {
             },
@@ -25,4 +25,4 @@ module.exports = {
             }
         }
     ]
-}
+}   
