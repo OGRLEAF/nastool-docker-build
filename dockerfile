@@ -1,11 +1,23 @@
 # syntax=docker/dockerfile:labs
 FROM debian:stable-slim
 
-ENV SSH_AGENT_UID=1000
-ENV NPM_MIRROR="--registry=https://registry.npmmirror.com"
-ENV PIP_MIRROR="--index-url=https://mirrors.aliyun.com/pypi/simple/"
+SHELL ["/bin/bash", "-c"]
 
-# RUN sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list
+ARG USE_CN_MIRROR
+
+ENV USE_CN_MIRROR=$USE_CN_MIRROR
+ENV SSH_AGENT_UID=1000
+ENV NPM_MIRROR=${USE_CN_MIRROR:+"--registry=https://registry.npmmirror.com"}
+ENV PIP_MIRROR=${USE_CN_MIRROR:+"--index-url=https://mirrors.aliyun.com/pypi/simple/"}
+RUN echo "Use npm mirror: ${NPM_MIRROR}"
+RUN echo "Use npm mirror: ${PIP_MIRROR}"
+
+# RUN ls -la /etc/apt/sources.list.d
+# RUN cat /etc/apt/sources.list.d/debian.sources
+# RUN if [[ -n $USE_CN_MIRROR ]] ; then \
+#         echo "Use apt mirror"; \
+#         sed -i 's/http:\/\/deb.debian.org/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list ; \
+#         fi
 
 
 ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-leaf.git#dev_noauth  /nastool-lite/server
@@ -66,6 +78,7 @@ RUN ${PIP} install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
 
 WORKDIR /nastool-lite/web-react
 RUN npm install ${NPM_MIRROR}
+RUN npm install sharp
 RUN npm run build
 WORKDIR /nastool-lite/
 RUN cp /nastool-lite/web-react/.next/standalone /nastool-lite/web -R

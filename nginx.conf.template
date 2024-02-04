@@ -73,6 +73,24 @@ http {
             proxy_read_timeout 3600s;
         }
 
+        location / {
+            # 原WEB页面
+            proxy_pass http://web;
+            proxy_http_version 1.1;
+            proxy_buffering off;
+            proxy_cache off;
+            proxy_redirect off;
+            proxy_set_header Connection "";
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Nginx-Proxy true;
+
+            # 超时设置
+            proxy_read_timeout 600s;
+        }
+
         location /api {
             # 后端API
             proxy_pass http://backend_api;
@@ -122,7 +140,7 @@ http {
         }
 
         location /ui/_next/static {
-             # 静态资源
+            # 静态资源
             expires 7d;
             add_header Cache-Control "public";
             alias /nastool-lite/web-static;
