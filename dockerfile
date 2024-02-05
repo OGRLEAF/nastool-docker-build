@@ -19,10 +19,6 @@ RUN echo "Use npm mirror: ${PIP_MIRROR}"
 #         sed -i 's/http:\/\/deb.debian.org/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list ; \
 #         fi
 
-
-ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-leaf.git#dev_noauth  /nastool-lite/server
-ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web-react
-
 RUN apt-get update
 RUN apt-get install -y \
         python3 \
@@ -52,22 +48,22 @@ RUN apt-get install -y  git \
 
 RUN python3 -V
 
-RUN adduser --disabled-password --uid 1001 app-user
-RUN chown app-user:app-user /nastool-lite
+RUN adduser --disabled-password --uid 1000 app-user
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - && sudo apt-get install -y nodejs
 
 RUN apt-get install nginx -y
-
 RUN npm install -g pm2 sharp
-# RUN chown root:root /nastool-lite -Rf
 
-# USER app-user
+RUN mkdir /nastool-lite
+RUN chown root:root /nastool-lite -Rf
 
 
 WORKDIR /nastool-lite
-RUN python3 -m venv python-venv
 
+ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-leaf.git#dev_noauth  /nastool-lite/server
+
+RUN python3 -m venv python-venv
 ENV PY_VENV=/nastool-lite/python-venv/bin
 ENV PIP=${PY_VENV}/pip
 ENV PYTHON=${PY_VENV}/python
@@ -76,7 +72,10 @@ RUN ${PIP} install cython  ${PIP_MIRROR}
 RUN ${PIP} install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
 
 
+ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web-react
+
 WORKDIR /nastool-lite/web-react
+
 RUN npm install ${NPM_MIRROR}
 RUN npm install sharp
 RUN npm run build
