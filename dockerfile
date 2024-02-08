@@ -94,7 +94,7 @@ COPY ./pm2_config.js ./ecosystem.config.js
 COPY nginx.conf.template /etc/nginx/
 
 RUN touch /.dockerenv
-RUN chmod 770 /root
+RUN chmod 770 /root -R
 
 ENV NGINX_PORT=3000
 ENV WEB_PORT=3002

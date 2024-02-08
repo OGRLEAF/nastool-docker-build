@@ -15,7 +15,7 @@ chown app-user:app-user $WEBDRIVER
 # chown app-user:app-user -R /nastool-lite/server
 # chown app-user:app-user -R $NATOOL_CONFIG_PATH
 echo "Ensure root permission"
-chown app-user:app-user -R /root
+# chown app-user:app-user -R /root
 
 echo "Start nginx..."
 nginx
