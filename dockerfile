@@ -1,4 +1,16 @@
 # syntax=docker/dockerfile:labs
+FROM node:21-slim as NODEJS
+
+ARG USE_CN_MIRROR
+ENV NPM_MIRROR=${USE_CN_MIRROR:+"--registry=https://registry.npmmirror.com"}
+
+ADD git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web-react
+WORKDIR /nastool-lite/web-react
+RUN npm install ${NPM_MIRROR}
+RUN npm install sharp
+RUN npm run build
+
+
 FROM debian:stable-slim
 
 SHELL ["/bin/bash", "-c"]
@@ -44,6 +56,7 @@ RUN apt-get install -y  git \
         redis \
         wget \
         sudo \
+        nginx \
         gettext-base
 
 RUN python3 -V
@@ -52,7 +65,6 @@ RUN adduser --disabled-password --uid 1000 app-user
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - && sudo apt-get install -y nodejs
 
-RUN apt-get install nginx -y
 RUN npm install -g pm2 sharp
 
 RUN mkdir /nastool-lite
@@ -71,18 +83,8 @@ RUN ${PIP} install --upgrade pip setuptools wheel ${PIP_MIRROR}
 RUN ${PIP} install cython  ${PIP_MIRROR}
 RUN ${PIP} install -r /nastool-lite/server/requirements.txt ${PIP_MIRROR}
 
-
-ADD --chown=app-user:app-user git@github.com:OGRLEAF/nas-tools-react /nastool-lite/web-react
-
-WORKDIR /nastool-lite/web-react
-
-RUN npm install ${NPM_MIRROR}
-RUN npm install sharp
-RUN npm run build
-WORKDIR /nastool-lite/
-RUN cp /nastool-lite/web-react/.next/standalone /nastool-lite/web -R
-RUN cp /nastool-lite/web-react/.next/static /nastool-lite/web-static -R
-RUN rm /nastool-lite/web-react -R
+COPY --from=NODEJS /nastool-lite/web-react/.next/standalone /nastool-lite/web
+COPY --from=NODEJS /nastool-lite/web-react/.next/static /nastool-lite/web-static
 
 USER root
 EXPOSE 3000
